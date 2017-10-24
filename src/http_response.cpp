@@ -49,7 +49,7 @@ HttpResponse::HttpResponse(HttpStatusCode code)
     : WebResponse()
     , m_status_code(code)
 {
-
+    set_header("Content-Type", "text/html");
 }
 
 HttpResponse::~HttpResponse() { }
@@ -57,7 +57,18 @@ HttpResponse::~HttpResponse() { }
 std::string
 HttpResponse::data() const
 {
-    return "";
+    std::stringstream stream;
+    std::map<std::string, std::string>::const_iterator it;
+    
+    stream << status_line() << "\r\n";
+    for(it = m_headers.begin(); it != m_headers.end(); it++)
+    {
+        // ex. Content-Type: text/html
+        stream << it->first << ": " << it->second << "\r\n"; 
+    }
+
+    stream << "\r\n" << body();
+    return stream.str();
 }
 
 HttpStatusCode
@@ -70,8 +81,10 @@ std::string
 HttpResponse::status_line() const
 {
     std::stringstream stream;
+
+    // ex. HTTP/1.1 200 OK
     stream << "HTTP/1.1 " 
-        << status_code()
+        << status_code() << " "
         << status_code_reason.reason(status_code());
     return stream.str();
 }
@@ -79,23 +92,38 @@ HttpResponse::status_line() const
 void
 HttpResponse::set_header(const std::string & key, const std::string & value)
 {
-
+    m_headers[key] = value;
 }
 
 std::string
 HttpResponse::header(const std::string & key)
 {
-    return "";
+    return m_headers[key];
 }
 
 std::string
 HttpResponse::body() const
 {
-    return "";
+    return m_body;
 }
 
 void
 HttpResponse::set_body(const std::string & body)
 {
+    m_body = body;
+    set_header("Content-Length", std::to_string(m_body.size()));
+}
 
+HttpResponse
+HttpResponse::http404()
+{
+    HttpResponse response(HTTP_NOT_FOUND);
+    return response;
+}
+
+HttpResponse
+HttpResponse::httpOK()
+{
+    HttpResponse response(HTTP_OK);
+    return response;
 }

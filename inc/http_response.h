@@ -58,6 +58,9 @@ namespace web_gui
         virtual std::string body() const;
         virtual void set_body(const std::string & body);
 
+        static HttpResponse httpOK();
+        static HttpResponse http404();
+
     private:
         std::map<std::string, std::string> m_headers;
         std::string m_body;
