@@ -34,13 +34,13 @@ public:
         _storage[505] = "HTTP Version Not Supported";
     }
 
-    char * reason(HttpStatusCode code) const
+    std::string reason(HttpStatusCode code) const
     {
         return _storage[code];
     }
 
 private:
-    char * _storage[600];
+    std::string _storage[600];
 };
 
 const StatusCodeReason status_code_reason;
@@ -52,12 +52,12 @@ HttpResponse::HttpResponse(HttpStatusCode code)
 
 }
 
-HttpResponse::HttpResponse() : HttpResponse(HTTP_OK) { }
+HttpResponse::~HttpResponse() { }
 
 std::string
 HttpResponse::data() const
 {
-
+    return "";
 }
 
 HttpStatusCode
@@ -69,7 +69,11 @@ HttpResponse::status_code() const
 std::string
 HttpResponse::status_line() const
 {
-
+    std::stringstream stream;
+    stream << "HTTP/1.1 " 
+        << status_code()
+        << status_code_reason.reason(status_code());
+    return stream.str();
 }
 
 void
@@ -79,18 +83,19 @@ HttpResponse::set_header(const std::string & key, const std::string & value)
 }
 
 std::string
-header(const std::string & key)
+HttpResponse::header(const std::string & key)
 {
-
+    return "";
 }
 
-std::string body() const
+std::string
+HttpResponse::body() const
 {
-
+    return "";
 }
 
 void
-set_body(const std::string & body)
+HttpResponse::set_body(const std::string & body)
 {
 
 }

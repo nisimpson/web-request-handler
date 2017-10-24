@@ -43,7 +43,6 @@ namespace web_gui
     class HttpResponse : public WebResponse
     {
     public:
-        HttpResponse();
         HttpResponse(HttpStatusCode code);
         ~HttpResponse();
 
