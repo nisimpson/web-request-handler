@@ -22,7 +22,7 @@ public:
         std::stringstream response;
         response << "<html>"
             << "<body>"
-            << "<h1>Hello, " << m_tag << "</h1"
+            << "<h1>Hello, " << m_tag << "</h1>"
             << "</body>"
             << "</html>";
 
