@@ -1,8 +1,9 @@
-#include "web_request_handler.h"
-#include "web_view.h"
 #include <iostream>
 #include <sstream>
+#include <regex>
 #include <fcgio.h>
+#include "web_request_handler.h"
+#include "web_view.h"
 
 using namespace std;
 using namespace web_gui;
@@ -142,15 +143,32 @@ WebRequestHandler::init()
 }
 
 void
-WebRequestHandler::add_route(string uri, WebView & view)
+WebRequestHandler::add_route(const string & pattern, WebView & view)
 {
-    m_router.insert(make_pair(uri, &view));
+    WebRequestRoute route;
+    route.pattern.assign(pattern);
+    route.view = &view;
+    m_router.push_back(route);
 }
 
 WebView * 
-WebRequestHandler::route(string pattern) const
+WebRequestHandler::route(const string & uri) const
 {
     return &test_web_view;
+    WebView * result = nullptr;
+
+    vector<WebRequestRoute>::const_iterator it = m_router.begin();
+    for(; it != m_router.end(); it++)
+    {
+        regex pattern(it->pattern);
+        if (regex_match(uri, pattern))
+        {
+            result = it->view;
+            break;
+        }
+    }
+
+    return result;
 }
 
 int

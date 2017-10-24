@@ -2,11 +2,16 @@
 #define WEB_REQUEST_HANDLER_H
 
 #include <string>
-#include <map>
+#include <vector>
 #include "web_view.h"
 
 namespace web_gui
 {
+    typedef struct {
+        std::string pattern;
+        WebView * view;
+    } WebRequestRoute;
+
     class WebRequestHandler
     {
     public:
@@ -15,10 +20,10 @@ namespace web_gui
         void init();
         int run();
         void cleanup();
-        void add_route(std::string pattern, WebView & view);
-        WebView * route(std::string uri) const;
+        void add_route(const std::string & pattern, WebView & view);
+        WebView * route(const std::string & uri) const;
     private:
-        std::map<std::string, WebView *> m_router;
+        std::vector<WebRequestRoute> m_router;
     };
 }
 
