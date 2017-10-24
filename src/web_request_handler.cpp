@@ -92,40 +92,6 @@ class FcgiWebRequest : public WebRequest
         string m_content;
 };
 
-class TestWebView : public WebView
-{
-    public:
-        TestWebView() : WebView() { }
-        ~TestWebView() { }
-
-        string handle_request(WebRequest & request)
-        {
-           
-            stringstream response;
-            string content(request.content());
-
-            if (content.length() == 0)
-            {
-                content = ", World!";
-            }
-
-            response << "Content-type: text/html\r\n"
-                << "\r\n"
-                << "<html>\n"
-                << "  <head>\n"
-                << "    <title>Hello, World!</title>\n"
-                << "  </head>\n"
-                << "  <body>\n"
-                << "    <h1>Hello" << content << " from " << request.uri() << "!</h1>\n"
-                << "  </body>\n"
-                << "</html>\n";
-
-            return response.str();
-        }
-};
-
-TestWebView test_web_view;
-
 WebRequestHandler::WebRequestHandler()
 {
     // empty
@@ -203,6 +169,11 @@ WebRequestHandler::run()
         if (view)
         {
             cout << view->handle_request(wrapper);
+        }
+
+        else
+        {
+            cout << "<html><h1>404 - Unknown Page</h1></html>";
         }
 
         // Note: the fcgi_streambuf destructor will auto flush

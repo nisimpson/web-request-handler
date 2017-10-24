@@ -1,4 +1,6 @@
 #!/bin/bash
+mkdir -p www
+
 clang++ \
     -lfcgi \
     -lfcgi++ \
@@ -6,5 +8,5 @@ clang++ \
     -DBUILD_TEST \
     -Iinc \
     -Itest \
-    -o obj/webhandler.test \
+    -o www/webhandler.test \
     src/* test/*.cpp

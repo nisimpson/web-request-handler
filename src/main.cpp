@@ -1,17 +1,20 @@
-#include "web_request_handler.h"
+#include "web_app.h"
 
 using namespace web_gui;
 
 #ifndef BUILD_TEST
 
 int main(void) {
-    WebRequestHandler handler;
-    int code = 0;
+    WebApp app;
+    int code = -1;
 
-    handler.init();
-    code = handler.run();
-    handler.cleanup();
-    
+    if (app.init() &&
+        app.run() &&
+        app.cleanup())
+    {
+        code = 0;
+    }
+
     return code;
 }
 
