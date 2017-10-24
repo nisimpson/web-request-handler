@@ -34,7 +34,7 @@ public:
         _storage[505] = "HTTP Version Not Supported";
     }
 
-    std::string reason(HttpStatusCode code) const
+    std::string text(HttpStatusCode code) const
     {
         return _storage[code];
     }
@@ -85,7 +85,7 @@ HttpResponse::status_line() const
     // ex. HTTP/1.1 200 OK
     stream << "HTTP/1.1 " 
         << status_code() << " "
-        << status_code_reason.reason(status_code());
+        << status_code_reason.text(status_code());
     return stream.str();
 }
 
