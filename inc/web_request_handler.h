@@ -21,6 +21,7 @@ namespace web_gui
         int run();
         void cleanup();
         void add_route(const std::string & pattern, WebView & view);
+        void clear_routes();
         WebView * route(const std::string & uri) const;
     private:
         std::vector<WebRequestRoute> m_router;

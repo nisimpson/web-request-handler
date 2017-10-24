@@ -2,6 +2,8 @@
 
 using namespace web_gui;
 
+#ifndef BUILD_TEST
+
 int main(void) {
     WebRequestHandler handler;
     int code = 0;
@@ -12,3 +14,5 @@ int main(void) {
     
     return code;
 }
+
+#endif // BUILD_TEST

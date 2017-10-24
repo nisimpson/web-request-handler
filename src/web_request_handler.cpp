@@ -151,10 +151,15 @@ WebRequestHandler::add_route(const string & pattern, WebView & view)
     m_router.push_back(route);
 }
 
+void
+WebRequestHandler::clear_routes()
+{
+    m_router.clear();
+}
+
 WebView * 
 WebRequestHandler::route(const string & uri) const
 {
-    return &test_web_view;
     WebView * result = nullptr;
 
     vector<WebRequestRoute>::const_iterator it = m_router.begin();
@@ -214,5 +219,5 @@ WebRequestHandler::run()
 void
 WebRequestHandler::cleanup()
 {
-
+    clear_routes();
 }
