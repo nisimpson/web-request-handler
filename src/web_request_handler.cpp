@@ -1,4 +1,5 @@
 #include "web_request_handler.h"
+#include "web_view.h"
 #include <iostream>
 #include <sstream>
 #include <fcgio.h>
@@ -123,27 +124,6 @@ class TestWebView : public WebView
 };
 
 TestWebView test_web_view;
-
-map<string, string>
-WebRequest::parse_query_string(const string & qs)
-{
-    map<string, string> queries;
-    if (qs.size() > 0)
-    {
-        string query;
-        stringstream tokenizer(qs);
-        while(getline(tokenizer, query, '&'))
-        {
-            string key;
-            string value;
-            stringstream queryTokenizer(query);
-            getline(queryTokenizer, key, '=');
-            getline(queryTokenizer, value, '=');
-            queries.insert(make_pair(key, value));
-        }
-    }
-    return queries;
-}
 
 WebRequestHandler::WebRequestHandler()
 {
