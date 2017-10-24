@@ -133,7 +133,7 @@ WebRequestHandler::WebRequestHandler()
 
 WebRequestHandler::~WebRequestHandler()
 {
-    // empty
+    cleanup();
 }
 
 void
