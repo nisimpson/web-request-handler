@@ -7,7 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "test"
+    "build": "./build_app.sh",
+    "build-test": "./build_test.sh",
+    "start": "lighttpd -D -f lighttpd/lighttpd.conf",
+    "start-test": "./www/webhandler.test",
+    "test": "npm run build-test && npm run start-test"
   },
   "repository": {
     "type": "git",
