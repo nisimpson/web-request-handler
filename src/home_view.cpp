@@ -18,7 +18,7 @@ HomeView::~HomeView()
 std::string
 HomeView::handle_request(WebRequest & request)
 {
-    return show_test_page(request);
+    return show_home_page(request);
 }
 
 std::string

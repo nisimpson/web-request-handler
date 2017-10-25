@@ -1,0 +1,22 @@
+{
+  "name": "web_client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/nisimpson/web-request-handler.git"
+  },
+  "author": "Nathan Simpson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/nisimpson/web-request-handler/issues"
+  },
+  "homepage": "https://gitlab.com/nisimpson/web-request-handler#README"
+}

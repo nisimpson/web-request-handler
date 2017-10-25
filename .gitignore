@@ -2,7 +2,7 @@
 
 ### C++ ###
 # Prerequisites
-*.d
+
 
 # Compiled Object files
 *.slo
@@ -45,3 +45,31 @@
 .history
 
 # End of https://www.gitignore.io/api/c++,visualstudiocode
+
+
+lighttpd/conf.d/access_log.conf
+lighttpd/conf.d/auth.conf
+lighttpd/conf.d/cgi.conf
+lighttpd/config.cmi.conf
+lighttpd/conf.d/expire.conf
+lighttpd/conf.d/webdav.conf
+lighttpd/conf.d/geoip.conf
+lighttpd/conf.d/trigger_b4_dl.conf
+lighttpd/conf.d/cml.conf
+lighttpd/conf.d/compress.conf
+lighttpd/conf.d/debug.conf
+lighttpd/conf.d/dirlisting.conf
+lighttpd/conf.d/evhost.conf
+lighttpd/conf.d/magnet.conf
+lighttpd/conf.d/mysql_vhost.conf
+lighttpd/conf.d/proxy.conf
+lighttpd/conf.d/rrdtool.conf
+lighttpd/conf.d/scgi.conf
+lighttpd/conf.d/secdownload.conf
+lighttpd/conf.d/simple_vhost.conf
+lighttpd/conf.d/ssi.conf
+lighttpd/conf.d/status.conf
+lighttpd/conf.d/userdir.conf
+lighttpd/conf.d/mime.conf
+
+node_modules
