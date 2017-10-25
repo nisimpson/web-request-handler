@@ -8,8 +8,9 @@ WebApp::~WebApp() { }
 bool 
 WebApp::init()
 {
-    m_handler.add_route("^/api/(.*)$", m_api_view);
-    m_handler.add_route("^/(.*)$", m_home_view);
+    m_handler.add_route("^/api(.*)$", m_api_view);
+    m_handler.add_route("^/$", m_home_view);
+    m_handler.add_404_view(m_error_view);
     return true;
 }
 

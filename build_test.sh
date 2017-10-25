@@ -9,4 +9,4 @@ clang++ \
     -Iinc \
     -Itest \
     -o www/webhandler.test \
-    src/* test/*.cpp
+    src/*.cpp src/common/*.cpp test/*.cpp

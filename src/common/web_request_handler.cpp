@@ -99,6 +99,7 @@ class FcgiWebRequest : public WebRequest
 };
 
 WebRequestHandler::WebRequestHandler()
+    : m_error(nullptr)
 {
     // empty
 }
@@ -129,10 +130,16 @@ WebRequestHandler::clear_routes()
     m_router.clear();
 }
 
+void
+WebRequestHandler::add_404_view(WebView & error)
+{
+    m_error = &error;
+}
+
 WebView * 
 WebRequestHandler::route(const string & uri) const
 {
-    WebView * result = nullptr;
+    WebView * result = m_error;
 
     vector<WebRequestRoute>::const_iterator it = m_router.begin();
     for(; it != m_router.end(); it++)

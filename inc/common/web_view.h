@@ -11,7 +11,7 @@ namespace web_gui
     public:
         virtual ~WebView() { /* empty */ }
         virtual std::string handle_request(WebRequest & request) = 0;
-        virtual std::string to_string() { return ""; }
+        virtual std::string to_string() const { return ""; }
     };
 }
 

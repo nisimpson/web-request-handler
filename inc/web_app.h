@@ -4,6 +4,7 @@
 #include "common/web_request_handler.h"
 #include "home_view.h"
 #include "api_view.h"
+#include "error_view.h"
 
 namespace web_gui
 {
@@ -21,6 +22,7 @@ namespace web_gui
         WebRequestHandler m_handler;
         HomeView m_home_view;
         ApiView m_api_view;
+        ErrorView m_error_view;
     };
 }
 

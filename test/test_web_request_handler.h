@@ -1,6 +1,6 @@
-#include "web_request_handler.h"
-#include "web_view.h"
-#include "web_request.h"
+#include "common/web_request_handler.h"
+#include "common/web_view.h"
+#include "common/web_request.h"
 #include "gtest/gtest.h"
 #include <string>
 #include <sstream>
@@ -34,7 +34,7 @@ public:
         return m_tag;
     }
 
-    std::string to_string()
+    std::string to_string() const
     {
         return tag();
     }
@@ -84,6 +84,26 @@ class WebRequestHandlerTest : public ::testing::Test
     MockWebView * view_one;
     MockWebView * view_two;
 };
+
+TEST_F(WebRequestHandlerTest, WebRequestHandlerPicks404)
+{
+    // should match only uris prefixed with 'api'
+    const std::string pattern_one = "^/api(.*)$";
+
+    // should match only root uri
+    const std::string pattern_two = "^/$";
+    
+    // otherwise, error
+    MockWebView view_error("error");
+
+    handler.add_route(pattern_one, *view_one);
+    handler.add_route(pattern_two, *view_two);
+    handler.add_404_view(view_error);
+
+    web_gui::WebView * expected = &view_error;
+    web_gui::WebView * actual = handler.route("/home.html");
+    EXPECT_EQ(expected->to_string(), actual->to_string()); 
+}
 
 TEST_F(WebRequestHandlerTest, MethodRoutePicksOne)
 {

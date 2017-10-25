@@ -1,21 +1,21 @@
-#ifndef API_VIEW_H
-#define API_VIEW_H
+#ifndef ERROR_VIEW_H
+#define ERROR_VIEW_H
 
 #include "common/web_view.h"
+#include "common/web_request.h"
 #include <string>
 
 namespace web_gui
 {
-    class ApiView : public WebView
+    class ErrorView : public WebView
     {
     public:
-        ApiView();
-        ~ApiView();
+        ErrorView();
+        ~ErrorView();
 
         std::string handle_request(WebRequest & request);
-        std::string show_error_page(WebRequest & request);
         std::string to_string() const;
     };
 }
 
-#endif // API_VIEW_H
+#endif // ERROR_VIEW_H

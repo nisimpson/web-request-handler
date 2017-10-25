@@ -12,7 +12,7 @@ namespace web_gui
         ~HomeView();
 
         std::string handle_request(WebRequest & request);
-        std::string to_string();
+        std::string to_string() const;
 
     private:
         std::string show_test_page(WebRequest & request);

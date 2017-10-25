@@ -1,6 +1,7 @@
 #include "home_view.h"
 #include "common/http_response.h"
 #include <sstream>
+#include <fstream>
 
 using namespace web_gui;
 
@@ -49,11 +50,26 @@ HomeView::show_test_page(WebRequest & request)
 std::string
 HomeView::show_home_page(WebRequest & request)
 {
-    return "";
+    HttpResponse response = HttpResponse::OK();
+    std::ifstream html;
+    std::stringstream stream;
+    std::string line;
+    html.open(request.document_root() + "/home.html");
+    if(html.is_open())
+    {
+        while(std::getline(html, line))
+        {
+            stream << line << "\n";
+        }
+        response.set_html(stream.str());
+        html.close();
+    }
+
+    return response.data();
 }
 
 std::string
-HomeView::to_string()
+HomeView::to_string() const
 {
     return "HomeView";
 }
