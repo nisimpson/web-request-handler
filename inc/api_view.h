@@ -14,6 +14,7 @@ namespace web_gui
 
         std::string handle_request(WebRequest & request);
         std::string show_error_page(WebRequest & request);
+        std::string handle_cvt_request(WebRequest & request);
         std::string to_string() const;
     };
 }

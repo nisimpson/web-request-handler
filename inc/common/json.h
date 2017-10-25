@@ -1,143 +1,117 @@
-
 /*
- * Developed by Rafa Garcia <rafagarcia77@gmail.com>
- *
- * tiny-json.h is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * tiny-json.h is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with tiny-json.h.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Documentation can be found here: https://github.com/rafagafe/tiny-json
- */
+  Copyright (C) 2011 Joseph A. Adams (joeyadams3.14159@gmail.com)
+  All rights reserved.
 
-#ifndef _TINY_JSON_H_
-#define	_TINY_JSON_H_
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+*/
+
+#ifndef CCAN_JSON_H
+#define CCAN_JSON_H
 
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
+#include <stddef.h>
 
-/** @defgroup tinyJson Tiny JSON parser.
-  * @{ */
-
-/** Enumeration of codes of supported JSON properties types. */
 typedef enum {
-    JSON_OBJ, JSON_ARRAY, JSON_TEXT, JSON_BOOLEAN,
-    JSON_INTEGER, JSON_REAL, JSON_NULL
-} jsonType_t;
+    JSON_NULL,
+    JSON_BOOL,
+    JSON_STRING,
+    JSON_NUMBER,
+    JSON_ARRAY,
+    JSON_OBJECT,
+} JsonTag;
 
-/** Structure to handle JSON properties. */
-typedef struct json_s {
-    struct json_s* sibling;
-    char const* name;
+typedef struct JsonNode JsonNode;
+
+struct JsonNode
+{
+    /* only if parent is an object or array (NULL otherwise) */
+    JsonNode *parent;
+    JsonNode *prev, *next;
+    
+    /* only if parent is an object (NULL otherwise) */
+    char *key; /* Must be valid UTF-8. */
+    
+    JsonTag tag;
     union {
-        char const* value;
-        struct json_s* child;
-    } u;
-    jsonType_t type;
-} json_t;
+        /* JSON_BOOL */
+        bool bool_;
+        
+        /* JSON_STRING */
+        char *string_; /* Must be valid UTF-8. */
+        
+        /* JSON_NUMBER */
+        double number_;
+        
+        /* JSON_ARRAY */
+        /* JSON_OBJECT */
+        struct {
+            JsonNode *head, *tail;
+        } children;
+    };
+};
 
-/** Parse a string to get a json.
-  * @param str String pointer with a JSON object. It will be modified.
-  * @param mem Array of json properties to allocate.
-  * @param qty Number of elements of mem.
-  * @retval Null pointer if any was wrong in the parse process.
-  * @retval If the parser process was successfully a valid handler of a json.
-  *         This property is always unnamed and its type is JSON_OBJ. */
-json_t const* json_create( char* str, json_t mem[], unsigned int qty );
+/*** Encoding, decoding, and validation ***/
 
-/** Get the name of a json property.
-  * @param json A valid handler of a json property.
-  * @retval Pointer to null-terminated if property has name.
-  * @retval Null pointer if the property is unnamed. */
-static inline char const* json_getName( json_t const* json ) {
-    return json->name;
-}
+JsonNode   *json_decode         (const char *json);
+char       *json_encode         (const JsonNode *node);
+char       *json_encode_string  (const char *str);
+char       *json_stringify      (const JsonNode *node, const char *space);
+void        json_delete         (JsonNode *node);
 
-/** Get the value of a json property.
-  * The type of property cannot be JSON_OBJ or JSON_ARRAY.
-  * @param json A valid handler of a json property.
-  * @return Pointer to null-terminated string with the value. */
-static inline char const* json_getValue( json_t const* property ) {
-    return property->u.value;
-}
+bool        json_validate       (const char *json);
 
-/** Get the type of a json property.
-  * @param json A valid handler of a json property.
-  * @return The code of type.*/
-static inline jsonType_t json_getType( json_t const* json ) {
-    return json->type;
-}
+/*** Lookup and traversal ***/
 
-/** Get the next sibling of a JSON property that is within a JSON object or array.
-  * @param json A valid handler of a json property.
-  * @retval The handler of the next sibling if found.
-  * @retval Null pointer if the json property is the last one. */
-static inline json_t const* json_getSibling( json_t const* json ) {
-    return json->sibling;
-}
+JsonNode   *json_find_element   (JsonNode *array, int index);
+JsonNode   *json_find_member    (JsonNode *object, const char *key);
 
-/** Search a property by its name in a JSON object.
-  * @param obj A valid handler of a json object. Its type must be JSON_OBJ.
-  * @param property The name of property to get.
-  * @retval The handler of the json property if found.
-  * @retval Null pointer if not found. */
-json_t const* json_getProperty( json_t const* obj, char const* property );
+JsonNode   *json_first_child    (const JsonNode *node);
 
+#define json_foreach(i, object_or_array)            \
+    for ((i) = json_first_child(object_or_array);   \
+         (i) != NULL;                               \
+         (i) = (i)->next)
 
-/** Search a property by its name in a JSON object and return its value.
-  * @param obj A valid handler of a json object. Its type must be JSON_OBJ.
-  * @param property The name of property to get.
-  * @retval If found a pointer to null-terminated string with the value.
-  * @retval Null pointer if not found or it is an array or an object. */
-char const* json_getPropertyValue( json_t const* obj, char const* property );
+/*** Construction and manipulation ***/
 
-/** Get the first property of a JSON object or array.
-  * @param json A valid handler of a json property.
-  *             Its type must be JSON_OBJ or JSON_ARRAY.
-  * @retval The handler of the first property if there is.
-  * @retval Null pointer if the json object has not properties. */
-static inline json_t const* json_getChild( json_t const* json ) {
-    return json->u.child;
-}
+JsonNode *json_mknull(void);
+JsonNode *json_mkbool(bool b);
+JsonNode *json_mkstring(const char *s);
+JsonNode *json_mknumber(double n);
+JsonNode *json_mkarray(void);
+JsonNode *json_mkobject(void);
 
-/** Get the value of a json boolean property.
-  * @param property A valid handler of a json object. Its type must be JSON_BOOLEAN.
-  * @return The value stdbool. */
-static inline bool json_getBoolean( json_t const* property ) {
-    return *property->u.value == 't';
-}
+void json_append_element(JsonNode *array, JsonNode *element);
+void json_prepend_element(JsonNode *array, JsonNode *element);
+void json_append_member(JsonNode *object, const char *key, JsonNode *value);
+void json_prepend_member(JsonNode *object, const char *key, JsonNode *value);
 
-/** Get the value of a json integer property.
-  * @param property A valid handler of a json object. Its type must be JSON_INTEGER.
-  * @return The value stdint. */
-static inline int64_t json_getInteger( json_t const* property ) {
-    return (int64_t)atoll( property->u.value );
-}
+void json_remove_from_parent(JsonNode *node);
 
-/** Get the value of a json real property.
-  * @param property A valid handler of a json object. Its type must be JSON_REAL.
-  * @return The value. */
-static inline double json_getReal( json_t const* property ) {
-    return atof( property->u.value );
-}
+/*** Debugging ***/
 
-/** @ } */
+/*
+ * Look for structure and encoding problems in a JsonNode or its descendents.
+ *
+ * If a problem is detected, return false, writing a description of the problem
+ * to errmsg (unless errmsg is NULL).
+ */
+bool json_check(const JsonNode *node, char errmsg[256]);
 
-#ifdef __cplusplus
-}
 #endif
-
-#endif	/* _TINY_JSON_H_ */
