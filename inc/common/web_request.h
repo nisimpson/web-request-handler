@@ -15,6 +15,7 @@ namespace web_gui
         virtual std::string query_string() const = 0;
         virtual std::string method() const = 0;
         virtual std::string user_agent() const = 0;
+        virtual std::string document_root() const = 0;
         static std::map<std::string, std::string> parse_query_string(const std::string & query);
     };
 

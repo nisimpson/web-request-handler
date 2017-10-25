@@ -1,7 +1,7 @@
 #ifndef HOME_VIEW_H
 #define HOME_VIEW_H
 
-#include "web_view.h"
+#include "common/web_view.h"
 
 namespace web_gui
 {

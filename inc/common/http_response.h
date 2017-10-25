@@ -1,7 +1,7 @@
 #ifndef HTTP_RESPONSE_H
 #define HTTP_RESPONSE_H
 
-#include "web_response.h"
+#include "common/web_response.h"
 #include <string>
 #include <map>
 
@@ -55,15 +55,15 @@ namespace web_gui
         virtual void set_header(const std::string & key, const std::string & value);
         virtual std::string header(const std::string & key);
         
-        virtual std::string body() const;
-        virtual void set_body(const std::string & body);
+        virtual std::string html() const;
+        virtual void set_html(const std::string & html);
 
-        static HttpResponse httpOK();
-        static HttpResponse http404();
+        static HttpResponse OK();
+        static HttpResponse Error404();
 
     private:
         std::map<std::string, std::string> m_headers;
-        std::string m_body;
+        std::string m_html;
         HttpStatusCode m_status_code;
     };
 }

@@ -1,4 +1,4 @@
-#include "http_response.h"
+#include "common/http_response.h"
 #include <sstream>
 
 using namespace web_gui;
@@ -67,7 +67,7 @@ HttpResponse::data() const
         stream << it->first << ": " << it->second << "\r\n"; 
     }
 
-    stream << "\r\n" << body();
+    stream << "\r\n" << html();
     return stream.str();
 }
 
@@ -102,27 +102,27 @@ HttpResponse::header(const std::string & key)
 }
 
 std::string
-HttpResponse::body() const
+HttpResponse::html() const
 {
-    return m_body;
+    return m_html;
 }
 
 void
-HttpResponse::set_body(const std::string & body)
+HttpResponse::set_html(const std::string & html)
 {
-    m_body = body;
-    set_header("Content-Length", std::to_string(m_body.size()));
+    m_html = html;
+    set_header("Content-Length", std::to_string(m_html.size()));
 }
 
 HttpResponse
-HttpResponse::http404()
+HttpResponse::Error404()
 {
     HttpResponse response(HTTP_NOT_FOUND);
     return response;
 }
 
 HttpResponse
-HttpResponse::httpOK()
+HttpResponse::OK()
 {
     HttpResponse response(HTTP_OK);
     return response;

@@ -1,7 +1,7 @@
 #ifndef WEB_APP_H
 #define WEB_APP_H
 
-#include "web_request_handler.h"
+#include "common/web_request_handler.h"
 #include "home_view.h"
 #include "api_view.h"
 

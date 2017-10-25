@@ -7,7 +7,8 @@ clang++ \
     -lfcgi++ \
     -Iinc \
     -o www/webapp.fcgi \
-    src/*.cpp
+    src/*.cpp \
+    src/common/*.cpp
 
 # mark app as executable
 chmod 700 www/webapp.fcgi

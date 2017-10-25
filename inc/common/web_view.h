@@ -2,7 +2,7 @@
 #define WEB_VIEW_H
 
 #include <string>
-#include "web_request.h"
+#include "common/web_request.h"
 
 namespace web_gui
 {

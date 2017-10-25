@@ -2,8 +2,8 @@
 #include <sstream>
 #include <regex>
 #include <fcgio.h>
-#include "web_request_handler.h"
-#include "web_view.h"
+#include "common/web_request_handler.h"
+#include "common/web_view.h"
 
 using namespace std;
 using namespace web_gui;
@@ -84,6 +84,12 @@ class FcgiWebRequest : public WebRequest
         {
             const char * user_agent = FCGX_GetParam("HTTP_USER_AGENT", m_request.envp);
             return string(user_agent);
+        }
+
+        string document_root() const
+        {
+            const char * doc_root = FCGX_GetParam("DOCUMENT_ROOT", m_request.envp);
+            return string(doc_root);
         }
 
     private:

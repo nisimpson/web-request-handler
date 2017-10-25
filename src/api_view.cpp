@@ -1,6 +1,8 @@
 #include "api_view.h"
-#include "http_response.h"
+#include "common/http_response.h"
 #include <sstream>
+#include <iostream>
+#include <fstream>
 
 using namespace web_gui;
 
@@ -17,13 +19,27 @@ ApiView::~ApiView()
 std::string
 ApiView::handle_request(WebRequest & request)
 {
-    HttpResponse response = HttpResponse::httpOK();
-    std::stringstream stream;
-    stream << "<html>"
-        << "<h1>Hello, Api!</h1>"
-        << "</html>";
+    return show_error_page(request);
+}
 
-    response.set_body(stream.str());    
+std::string
+ApiView::show_error_page(WebRequest & request)
+{
+    HttpResponse response = HttpResponse::Error404();
+    std::ifstream errorPage;
+    std::stringstream stream;
+    std::string line;
+    errorPage.open(request.document_root() + "/404.html");
+    if(errorPage.is_open())
+    {
+        while(std::getline(errorPage, line))
+        {
+            stream << line << "\n";
+        }
+        response.set_html(stream.str());
+        errorPage.close();
+    }
+
     return response.data();
 }
 

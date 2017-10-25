@@ -1,5 +1,5 @@
 #include "home_view.h"
-#include "http_response.h"
+#include "common/http_response.h"
 #include <sstream>
 
 using namespace web_gui;
@@ -23,7 +23,7 @@ HomeView::handle_request(WebRequest & request)
 std::string
 HomeView::show_test_page(WebRequest & request)
 {
-    std::stringstream body;
+    std::stringstream html;
     std::string content(request.content());
 
     if (content.length() == 0)
@@ -31,18 +31,18 @@ HomeView::show_test_page(WebRequest & request)
         content = ", World!";
     }
 
-    body << "<html>\n"
+    html << "<html>\n"
         << "  <head>\n"
         << "    <title>Hello, Nathan!</title>\n"
         << "  </head>\n"
-        << "  <body>\n"
+        << "  <html>\n"
         << "    <h1>Home View</h1>\n"
         << "    <h2>Hello" << content << " from " << request.uri() << "!</h2>\n"
-        << "  </body>\n"
+        << "  </html>\n"
         << "</html>\n";
 
-    HttpResponse response = HttpResponse::httpOK();
-    response.set_body(body.str());
+    HttpResponse response = HttpResponse::OK();
+    response.set_html(html.str());
     return response.data();
 }
 
