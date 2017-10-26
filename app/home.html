@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+
+    <title>Single Page App Without A Framework</title>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="main-content">
+
+        <div class="cvt-report page">
+
+            <h3>CVT Report</h3>
+
+            <ul class="cvt-list">
+                <script id="cvt-template" type="x-handlebars-template">​
+                    {{#each this.items}}
+                      <li data-index="{{id}}">
+                        <span>Name: </span>{{key}}</br>
+                        <span>Value: </span>{{value}}
+                      </li>
+                    {{/each}}
+                  </script>
+            </ul>
+
+        </div>
+
+        <div class="home page">
+
+            <div class="overlay"></div>
+
+            <button id="cvt-nav-button">Generate CVT Report</button>
+
+        </div>
+
+        <div class="error page">
+            <h3>Sorry, something went wrong :(</h3>
+        </div>
+
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+    <script src="lib/script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+body{
+	font: normal 16px Arial, Helvetica, sans-serif;
+}
+
+h1, h3{
+	font: normal 24px 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+/*-----------------
+	Main Content
+------------------*/
+
+
+.main-content {
+	box-sizing: border-box;
+	text-align: center;
+	margin: 125px auto 60px;
+	padding: 0 40px;
+}
+
+.main-content h3 {
+	font-size: 28px;
+	color:  #5a96b9;
+	padding-bottom: 20px;
+}
+
+@media (max-width: 600px){
+
+	.main-content{
+		margin: 45px auto;
+		padding: 0 25px;
+	}
+
+}
+
+/*-------------------
+    Home Page
+--------------------*/
+
+.home {
+    opacity: 0;
+}
+
+.home.visible {
+    opacity: 1;
+}
+
+/*-------------------
+	All Products Page
+--------------------*/
+
+
+.cvt-report {
+	opacity: 0;
+}
+
+.cvt-list{
+	list-style:none;
+	padding: 0;
+	opacity: 0;
+}
+
+.cvt-list li {
+    text-align: left;
+    padding: 12px;
+}
+
+.cvt-report.visible {
+    opacity: 1;
+}
+
+.cvt-report.visible .cvt-list,
+.cvt-report.visible .filters,
+.cvt_report.visible h3 {
+	opacity: 1;
+	transition: 1s;
+	pointer-events: auto;
+}
+
+/*---------------------------
+	Error Page
+----------------------------*/
+
+.error {
+	opacity: 0;
+	transition: 0.6s;
+	pointer-events: none;
+	position: absolute;
+	left: 0;
+	top: 100px;
+	width: 100%;
+}
+
+.error.visible {
+    opacity: 1;
+}
+
+.error h3 {
+	font-size: 40px;
+}
