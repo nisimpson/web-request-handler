@@ -1,12 +1,12 @@
 #!/bin/bash
-mkdir -p www
+mkdir -p app
 
 # build app
 clang++ \
     -lfcgi \
     -lfcgi++ \
     -Iinc \
-    -o www/webapp.fcgi \
+    -o app/webapp.fcgi \
     src/*.cpp \
     src/common/*.cpp
 
