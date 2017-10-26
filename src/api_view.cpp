@@ -67,13 +67,16 @@ ApiView::handle_cvt_request(WebRequest & request)
     JsonNode * arr = json_mkarray();
     json_append_member(root, "items", arr);
 
+    int i = 0;
     std::vector<MockCvtItem>::iterator it;
     for (it = items.begin(); it != items.end(); it++)
     {
         JsonNode * item = json_mkobject();
+        json_append_member(item, "id", json_mknumber(i));
         json_append_member(item, "key", json_mkstring(it->key.c_str()));;
         json_append_member(item, "value", json_mkstring(it->value.c_str()));;
         json_append_element(arr, item);
+        i++;
     }
 
     HttpResponse response = HttpResponse::OK();
